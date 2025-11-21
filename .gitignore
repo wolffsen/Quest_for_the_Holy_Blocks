@@ -1,0 +1,133 @@
+############################
+# Flutter / Dart
+############################
+
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+**/build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.melos_tool/
+coverage/
+
+# Generated Dart / JS artifacts
+*.dart.js
+*.info.json
+*.js
+*.js.map
+
+############################
+# Android
+############################
+
+android/.gradle/
+android/local.properties
+android/**/.cxx/
+android/**/captures/
+android/**/generated/
+android/**/intermediates/
+android/**/outputs/
+android/app/build/
+android/app/release/
+android/app/profile/
+android/app/debug/
+
+# Android output files (never commit these)
+*.apk
+*.aab
+*.aar
+
+# Keystores and signing configs
+*.jks
+*.keystore
+key.jks
+keystore.jks
+**/key.properties
+
+# Google / Firebase config
+android/app/google-services.json
+android/app/google-services.json.*
+android/app/src/**/google-services.json
+
+############################
+# iOS / Xcode
+############################
+
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/.last_build_id
+ios/Flutter/ephemeral/
+ios/Runner/GeneratedPluginRegistrant.*
+**/xcuserdata/
+**/DerivedData/
+*.xcworkspace
+*.xcuserstate
+
+############################
+# Web (if enabled)
+############################
+
+web/.dart_tool/
+web/build/
+
+############################
+# Desktop (if enabled)
+############################
+
+linux/build/
+macos/Flutter/ephemeral/
+windows/flutter/ephemeral/
+
+############################
+# IDE / Editor
+############################
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Other editor cruft
+*.swp
+*.swo
+*.tmp
+
+############################
+# OS files
+############################
+
+.DS_Store
+**/.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+############################
+# Fastlane
+############################
+
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+############################
+# Game / asset sources (optional)
+############################
+
+# Source art / audio you don’t want in repo
+assets/raw_temp/
+assets/debug/
+assets/cache/
+*.psd
+*.xcf
+*.bak
+*.wav~
+*.mp3~
+*.png~

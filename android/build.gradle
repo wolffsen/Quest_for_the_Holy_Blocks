@@ -1,0 +1,39 @@
+plugins {
+    id "com.android.application" version "8.6.0" apply false
+    id "com.android.library" version "8.6.0" apply false
+    id "org.jetbrains.kotlin.android" version "2.1.0" apply false
+}
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+subprojects { subproject ->
+    subproject.afterEvaluate {
+        if (subproject.name == 'google_mobile_ads' && subproject.hasProperty('android')) {
+            def androidExt = subproject.extensions.findByName('android')
+            if (androidExt != null && androidExt.hasProperty('namespace') && androidExt.namespace == null) {
+                androidExt.namespace = 'io.flutter.plugins.googlemobileads'
+            }
+        }
+        if (subproject.plugins.hasPlugin("com.android.application")) {
+            subproject.tasks.matching { it.name ==~ /^bundle.*Release$/ }.configureEach { bundleTask ->
+                bundleTask.doLast {
+                    def variantName = bundleTask.name - "bundle"
+                    if (!variantName) {
+                        return
+                    }
+                    def variantDir = variantName[0].toLowerCase() + variantName.substring(1)
+                    def sourceDir = new File(subproject.buildDir, "outputs/bundle/${variantDir}")
+                    if (!sourceDir.exists()) {
+                        return
+                    }
+                    def flutterOutputDir = new File(rootProject.projectDir.parentFile, "build/app/outputs/bundle/${variantDir}")
+                    flutterOutputDir.mkdirs()
+                    subproject.copy {
+                        from subproject.fileTree(sourceDir) { include "**/*.aab" }
+                        into flutterOutputDir
+                    }
+                }
+            }
+        }
+    }
+}
