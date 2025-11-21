@@ -64,16 +64,20 @@ class PieceTray extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   for (final piece in state.activePieces)
-                    Expanded(
+                    Flexible(
+                      fit: FlexFit.loose, // 👈 let the child size itself
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 6),
-                        child: _PieceDraggable(
-                          piece: piece,
-                          rotationEnabled: state.rotationEnabled,
-                          onRotate: () => controller.rotatePiece(piece.id),
-                          enabled: !state.isGameOver && !state.isPaused,
-                          theme: theme,
-                          cellSize: cellSize,
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          child: _PieceDraggable(
+                            piece: piece,
+                            rotationEnabled: state.rotationEnabled,
+                            onRotate: () => controller.rotatePiece(piece.id),
+                            enabled: !state.isGameOver && !state.isPaused,
+                            theme: theme,
+                            cellSize: cellSize,
+                          ),
                         ),
                       ),
                     ),
@@ -181,6 +185,7 @@ class _BoardSizedPiece extends StatelessWidget {
   }
 }
 
+/// PREVIEW CARD UNDER THE ROTATE ICON
 class _PiecePreview extends StatelessWidget {
   const _PiecePreview({
     required this.piece,
@@ -220,39 +225,52 @@ class _PiecePreview extends StatelessWidget {
         child: LayoutBuilder(
           builder: (context, constraints) {
             final cellSize = constraints.maxWidth / piece.width;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (var y = 0; y < piece.height; y++)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (var x = 0; x < piece.width; x++)
-                        Padding(
-                          padding: const EdgeInsets.all(1.5),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 150),
-                            width: cellSize - 3,
-                            height: cellSize - 3,
-                            decoration: BoxDecoration(
-                              color: piece.cells[y][x] == 1
-                                  ? piece.color
-                                  : theme.emptyCellColor,
-                              borderRadius: BorderRadius.circular(4),
-                              boxShadow: piece.cells[y][x] == 1
-                                  ? [
-                                      BoxShadow(
-                                        color: piece.color.withValues(alpha: 0.6),
-                                        blurRadius: 6,
-                                      ),
-                                    ]
-                                  : null,
+
+            // IMPORTANT:
+            // - Align the whole grid to the TOP-RIGHT of the card.
+            // - Rows are also right-aligned.
+            // This keeps the rotate icon (top/right of the card)
+            // visually “attached” to the piece for all shapes.
+            return Align(
+              alignment: Alignment.topRight,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  for (var y = 0; y < piece.height; y++)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        for (var x = 0; x < piece.width; x++)
+                          Padding(
+                            padding: const EdgeInsets.all(1.5),
+                            child: AnimatedContainer(
+                              duration:
+                                  const Duration(milliseconds: 150),
+                              width: cellSize - 3,
+                              height: cellSize - 3,
+                              decoration: BoxDecoration(
+                                color: piece.cells[y][x] == 1
+                                    ? piece.color
+                                    : theme.emptyCellColor,
+                                borderRadius: BorderRadius.circular(4),
+                                boxShadow: piece.cells[y][x] == 1
+                                    ? [
+                                        BoxShadow(
+                                          color: piece.color
+                                              .withValues(alpha: 0.6),
+                                          blurRadius: 6,
+                                        ),
+                                      ]
+                                    : null,
+                              ),
                             ),
                           ),
-                        ),
-                    ],
-                  ),
-              ],
+                      ],
+                    ),
+                ],
+              ),
             );
           },
         ),

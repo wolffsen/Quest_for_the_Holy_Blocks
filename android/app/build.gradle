@@ -4,7 +4,7 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
-def flutterVersionCode = project.hasProperty('flutterVersionCode') ? project.property('flutterVersionCode') : '4'
+def flutterVersionCode = project.hasProperty('flutterVersionCode') ? project.property('flutterVersionCode') : '7'
 def flutterVersionName = project.hasProperty('flutterVersionName') ? project.property('flutterVersionName') : '1.0.4'
 
 import java.util.Properties
